@@ -1,6 +1,8 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 import uuid
 # Create your views here.
+from .models import Url
 
 
 def index(request):
@@ -9,5 +11,8 @@ def index(request):
 
 def create(request):
     if request.method == 'POST':
-        url = request.POST['link']
+        link = request.POST['link']
         uid = str(uuid.uuid4())[:5]
+        new_url = Url(link=link, uuid=uid)
+        new_url.save()
+        return HttpResponse(uid)
